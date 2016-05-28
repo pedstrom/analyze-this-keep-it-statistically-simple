@@ -1,0 +1,75 @@
+---
+title: "Analysis"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+This is our analysis of the [Science Museum of Minnesota](https://www.smm.org) member data for participation in the [Analyze This!](http://www.meetup.com/AnalyzeThis/) 2016 Science Museum Summer Challenge.
+
+### Keep It Statistically Simple Team
+
+- Justin Grammens <justin@recursiveawesome.com>
+- Tron Kotz <tron.kotz@gmail.com>
+- Lance Kaiwei <lancekaiwei@gmail.com>
+- Saad Khan <saadkhan321@gmail.com>
+- Peter Edstrom <peter@softwareforgood.com>
+
+
+## Import the data into dataframes
+
+Let's start by pulling the data into local variables. Noted here so you can see where the data comes from. If you do not have a copy of the `SMM Competitor Workbook 5.25.16.xlsx` file, please contact Beth Varro at <bvarro@smm.org> and fill out an NDA.
+
+```{r data}
+library(readxl)
+workbook.file <- "data/SMM Competitor Workbook 5.25.16.xlsx"
+ad <- read_excel(workbook.file, sheet="Analytics Dataset")
+ml <- read_excel(workbook.file, sheet="Mbrshp Level")
+pm <- read_excel(workbook.file, sheet="Pmt Mthd")
+sc <- read_excel(workbook.file, sheet="Sales Channel")
+o1 <- read_excel(workbook.file, sheet="Offer on 1st Ren Notice")
+ei <- read_excel(workbook.file, sheet="Email Indicators")
+eo <- read_excel(workbook.file, sheet="EMail Options")
+d1 <- read_excel(workbook.file, sheet="Demo_1")
+zc <- read_excel(workbook.file, sheet="Zip Code")
+kp <- read_excel(workbook.file, sheet="Key people on Membership")
+nv <- read_excel(workbook.file, sheet="Num Visits")
+cs <- read_excel(workbook.file, sheet="CSIs")
+co <- read_excel(workbook.file, sheet="Communication")
+```
+
+## Basic Visuals
+
+Let's take a first pass to see what the data looks like. 
+
+```{r ad prep}
+library(ggplot2)
+ad$`Initiation Month` <- cut(ad$`Initiation Date`, breaks="month")
+ad$`Expiration Month` <- cut(ad$`Expiration Date`, breaks="month")
+```
+
+Here we have a bar chart showing in what months the initiations are found.
+
+```{r ad chart for Initiations, echo=FALSE, fig.height=2}
+ggplot(data=ad,
+  aes(`Initiation Month`,1)) +
+  stat_summary(fun.y=sum, geom="bar") +
+  theme(axis.text.x=element_text(angle = 45, hjust = 1), axis.title.x=element_blank()) +
+  ylab("Initiation Count")
+```
+
+And this shows the expirations by month. Showing expirations as a negative count.
+
+```{r ad chart for Expiration, echo=FALSE, fig.height=2}
+ggplot(data=ad,
+  aes(`Expiration Month`,-1)) +
+  stat_summary(fun.y=sum, geom="bar") +
+  theme(axis.text.x=element_text(angle = 45, hjust = 1), axis.title.x=element_blank()) +
+  ylab("Expiration Count")
+```
+
+
