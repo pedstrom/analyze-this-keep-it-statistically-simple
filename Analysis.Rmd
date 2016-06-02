@@ -42,6 +42,19 @@ cs <- read_excel(workbook.file, sheet="CSIs")
 co <- read_excel(workbook.file, sheet="Communication")
 ```
 
+## Clean some data
+
+Remove a few records that do not have matching records in the `ad` data frame per the [thread](http://www.meetup.com/AnalyzeThis/events/230716702/?read=1&_af=event&_af_eid=230716702&https=off) on Meetup.
+
+```{r clean data}
+cs <- cs[cs$`ID Number`!=6871452,]
+pm <- pm[pm$`ID Number`!=6993112,]
+sc <- sc[sc$`ID Number`!=6993112,]
+o1 <- o1[o1$`ID Number`!=6993112,]
+nv <- nv[nv$`ID Number`!=6993112,]
+co <- co[co$`ID Number`!=6993112,]
+```
+
 ## Basic Visuals
 
 Let's take a first pass to see what the data looks like. 
