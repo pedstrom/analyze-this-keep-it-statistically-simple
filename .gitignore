@@ -4,3 +4,7 @@ data/*
 *.Rproj
 
 *.pdf
+
+.RData
+
+.Rhistory
