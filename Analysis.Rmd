@@ -72,4 +72,45 @@ ggplot(data=ad,
   ylab("Expiration Count")
 ```
 
+First thing that jumps out at me is that there is a huge spike in March, and a very quiet month in Septemeber. Would love to see a longer period of time, as I suspect there is some seasonality to the membership. Perhaps the low Septemeber month is because school is starting, and the high March month is because schools are raising awarness to the SMM through end-of-year field trips? 
+
+Also, you can see the initiation and expiration charts are nearly identical opposites. How many of the first-year members renew? 
+
+```{r how many renew}
+table(ad[,c("Renew")])
+```
+
+As it turns out, not many. About 12% of the population renewed (1) and 7570 did not (0). Having precisly 1000 renewals seems odd and makes me wonder how this data was filtered to begin with. 
+
+## Sample the Data
+
+This is where I think we should divide up the data into a few groups - data to create the model, the set we'll be tested on, and then a group or two for testing? Glad for anyone to jump in here and provide some insight. 
+
+## Modeling Data / Regression Analysis
+
+Breaking this up into two sections. The first section is As-Is. This is where I'm thinking we provide analysis on the data without making any major changes to it. The second section focuses on doing analysis on 2nd order data. For example: calculate the duration of the membership in days and use that in looking for correlations, or trying to quantify good CSIs from neutral and bad ones before correlating. Or calculating distance by the zip code, etc.
+
+### Modeling Data As-Is
+
+Starting with a linear regression on the Membership Level Discounts.
+
+```{r Membership Level Discounts}
+ad.ml <- merge(ad, ml, by="ID Number")
+fit <- lm(Renew ~ Discount, data=ad.ml)
+summary(fit)
+```
+
+This tells us that with regression coefficients near zero and a multiple r-squared value less than 1%, that **discounts are not a factor in renewals**.
+
+Lets look at Membership Levels next.
+
+```{r Membership Levels}
+fit <- lm(Renew ~ Mbr1 + Mbr2 + Mbr1:Mbr2, data=ad.ml)
+summary(fit)
+```
+
+TODO: add analysis on what the summary means.
+
+### Modeling Data with Computed Columns
+
 
