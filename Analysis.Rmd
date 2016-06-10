@@ -40,6 +40,9 @@ kp <- read_excel(workbook.file, sheet="Key people on Membership")
 nv <- read_excel(workbook.file, sheet="Num Visits")
 cs <- read_excel(workbook.file, sheet="CSIs")
 co <- read_excel(workbook.file, sheet="Communication")
+
+workbook.file <- "data/The Data Dictionary 5.25.16.xlsx"
+pe <- read_excel(workbook.file, sheet="Simplified Program and Events")
 ```
 
 ## Clean some data
@@ -126,4 +129,30 @@ TODO: add analysis on what the summary means.
 
 ### Modeling Data with Computed Columns
 
+Program and Event Data
 
+We reviewed the Program and Event data and simplified each event down to types of events. We made a number of assumptions in this process, including things such as "Small upcharge" was the same as an "Upcharge exhibit" and "Free temporary exhibit" is the same as "free exhibit". The goal here being to simplify the types of events, but have enough of them that we can see reasonabally-credible trends. There are certainly opportunities to look for one-off coorelations ("B-feature; played 2 times/day to give some variety") however because these are all single instances, or near-single instances, we felt that was not a valuable exercise at this time. 
+
+The data, therefore, becaome:
+
+```{r program and event table}
+pe
+```
+
+To link these dates up to members for analysls, we had to take a few steps:
+
+```{r nearest future start}
+#function to look up the next event
+nextNearestEvent <- function(d,t){
+  a <- pe[as.Date(pe$"Start Date") >= t,]
+  b <- min(a$"Start Date")
+  return(b)
+}
+
+#create a column with that event
+# TODO, this isn't working yet
+# ad$nextEventDate <- lapply(ad$"Expiration Date", nextNearestEvent, t="Expiration Date")
+
+#then do that for multiple event types
+# TODO
+```
