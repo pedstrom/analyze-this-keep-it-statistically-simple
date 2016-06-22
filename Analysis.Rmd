@@ -41,6 +41,7 @@ nv <- read_excel(workbook.file, sheet="Num Visits")
 cs <- read_excel(workbook.file, sheet="CSIs")
 co <- read_excel(workbook.file, sheet="Communication")
 
+
 workbook.file <- "data/The Data Dictionary 5.25.16.xlsx"
 pe <- read_excel(workbook.file, sheet="Simplified Program and Events")
 ```
@@ -155,4 +156,24 @@ nextNearestEvent <- function(d,t){
 
 #then do that for multiple event types
 # TODO
+```
+
+Merge all of the tabs for a massive csv
+
+```{r merge}
+
+df <- merge(ad, ml, by="ID Number")
+df <- merge(df, pm, by="ID Number")
+df <- merge(df, sc, by="ID Number")
+df <- merge(df, o1, by="ID Number")
+df <- merge(df, ei, by="ID Number")
+df <- merge(df, eo, by="ID Number")
+df <- merge(df, d1, by="ID Number")
+df <- merge(df, zc, by="ID Number")
+df <- merge(df, kp, by="ID Number")
+df <- merge(df, nv, by="ID Number")
+#df <- merge(df, cs, by="ID Number") #SKIP THIS since there are only 1192 observations
+df <- merge(df, co, by="ID Number")
+write.table(df, "all.columns.csv", col.names=TRUE, row.names=FALSE, sep=",")
+
 ```
