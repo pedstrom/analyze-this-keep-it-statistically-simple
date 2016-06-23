@@ -177,3 +177,20 @@ df <- merge(df, co, by="ID Number")
 write.table(df, "all.columns.csv", col.names=TRUE, row.names=FALSE, sep=",")
 
 ```
+
+
+What columns are most important? 
+
+```{r important columns}
+
+#cols that can't compare
+df.sub <- df[,-which(names(df) %in% c("Initiation Date", "Expiration Date", "Test or Train?", "Mbr1", "Mbr2", "Discount"))]
+
+for (n in colnames(df.sub)){
+  print(paste("Looking up:", n))
+  # comment these lines out to see the correlation for each column, not sure why it doesn't work with knitr
+  #c <- cor(df.sub$Renew, df.sub[n], use="complete.obs")
+  #print(paste("  cor=",c))
+}
+
+```
